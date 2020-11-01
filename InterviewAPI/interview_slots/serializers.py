@@ -40,8 +40,12 @@ class CandidateTimeSlotSerializer(serializers.ModelSerializer):
         if end_datetime < timezone.now().timestamp():
             raise serializers.ValidationError({"message": "End date and time is lesser than current time."})
         # Convert the start and end datetime
-        data['start_datetime'] = str(datetime.fromtimestamp(float(start_datetime), tz=pytz.UTC))
-        data['end_datetime'] = str(datetime.fromtimestamp(float(end_datetime), tz=pytz.UTC))
+        start_datetime = datetime.fromtimestamp(float(start_datetime), tz=pytz.UTC)
+        end_datetime = datetime.fromtimestamp(float(end_datetime), tz=pytz.UTC)
+        if start_datetime.date() != end_datetime.date():
+            raise err.ValidationError("Please select the same date for the available time slot.", 400)
+        data['start_datetime'] = str(start_datetime)
+        data['end_datetime'] = str(end_datetime)
 
         return data
 
@@ -97,8 +101,12 @@ class InterviewerTimeSlotSerializer(serializers.ModelSerializer):
         if end_datetime < timezone.now().timestamp():
             raise serializers.ValidationError({"message": "End date and time is lesser than current time."})
         # Convert the start and end datetime
-        data['start_datetime'] = str(datetime.fromtimestamp(float(start_datetime), tz=pytz.UTC))
-        data['end_datetime'] = str(datetime.fromtimestamp(float(end_datetime), tz=pytz.UTC))
+        start_datetime = datetime.fromtimestamp(float(start_datetime), tz=pytz.UTC)
+        end_datetime = datetime.fromtimestamp(float(end_datetime), tz=pytz.UTC)
+        if start_datetime.date() != end_datetime.date():
+            raise err.ValidationError("Please select the same date for the available time slot.", 400)
+        data['start_datetime'] = str(start_datetime)
+        data['end_datetime'] = str(end_datetime)
 
         return data
 

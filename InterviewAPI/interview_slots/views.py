@@ -94,13 +94,14 @@ class InterviewScheduleTimeSlotsView(RetrieveAPIView):
             interviewer_start_time = interviewer_instance.start_datetime
             interviewer_end_time = interviewer_instance.end_datetime
 
+            if candidate_start_time.date() != interviewer_start_time.date():
+                raise err.ValidationError("Date mismatch for the candidate and interviewer.", 400)
+
             if candidate_start_time < interviewer_start_time:
                 start_time = interviewer_start_time.strftime("%H:%M")
             else:
                 start_time = candidate_start_time.strftime("%H:%M")
-            print("candidate_end_time: ", candidate_end_time, ", interviewer_end_time: ", interviewer_end_time)
             if candidate_end_time < interviewer_end_time:
-                print("here......")
                 end_time = candidate_end_time.strftime("%H:%M")
             else:
                 end_time = interviewer_end_time.strftime("%H:%M")
